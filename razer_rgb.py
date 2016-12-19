@@ -209,4 +209,5 @@ while not root_confirmed:
 
 
 if __name__ == '__main__':
+	write_to_file('brightness', '255')
 	scrolling_text('hello world', bg_color=(0,0,0), text_color=(255,255,255), speed=8, variety=32)
