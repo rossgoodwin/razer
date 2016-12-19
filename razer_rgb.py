@@ -8,9 +8,8 @@ from time import sleep
 from math import log1p
 import json
 import string
-# from colour import Color
 
-ROOT = "/sys/bus/hid/drivers/hid-razer/0003:1532:020F.0003"
+ROOT = "/sys/bus/hid/drivers/hid-razer/0003:1532:020F.0001"
 ROW_COUNT = 6
 COL_COUNT = 16
 
@@ -25,7 +24,6 @@ def set_keyboard_rgb(rgb_list):
 	"""
 	Set all keys rgb values. Takes list of tups.
 	"""
-
 	hex_str = ''.join(
 		map(
 			lambda tup: ''.join(map(chr, tup)),
@@ -196,23 +194,19 @@ def scrolling_text(msg, text_color=(255,0,0), bg_color=(0,255,0), twinkle=True, 
 
 		sleep(1.0/speed)
 
+# test ROOT
+root_confirmed = False
+i = 0
+while not root_confirmed:
+	try:
+		write_to_file('brightness', '0')
+	except IOError:
+		ROOT = ROOT[:-1] + str(i)
+		i += 1
+	else:
+		root_confirmed = True
 
 
 
 if __name__ == '__main__':
 	scrolling_text('hello world', bg_color=(0,0,0), text_color=(255,255,255), speed=8, variety=32)
-	# solid_color(0,0,0)
-	# write_to_file('brightness', '255')
-	# random_burst(secs=1, sparseness=15)
-	# random_burst(secs=1, sparseness=9)
-	# random_burst(secs=1, sparseness=5)
-	# random_burst(secs=1, sparseness=2)
-	# random_burst(secs=1, sparseness=1)
-	# random_burst(secs=1)
-	# r_wipe(count=3)
-	# monochrome_noise(38,207,64, secs=3, variety=128)
-	# write_to_file('brightness', '128')
-	# sleep(0.2)
-	# write_to_file('brightness', '64')
-	# sleep(0.2)
-	# write_to_file('brightness', '32')
