@@ -91,6 +91,35 @@ def random_burst(secs=10, per_sec=10, bright=False, sparseness=0):
 
         sleep(1.0/per_sec)
 
+def perlin_noise(secs=20, per_sec=15):
+    from noise import pnoise3
+
+    t = 0.0
+    y = 0.0
+    random_base = choice(range(256))
+    for interval in range(secs*per_sec):
+        x = 0.0
+        key_vals = [list() for _ in range(ROW_COUNT)]
+        for i in range(ROW_COUNT):
+            y += 3.3
+            for j in range(COL_COUNT):
+                x += 3.3
+                r_val = clamp(int(pnoise3(x,y,t, octaves=8, repeatx=1, repeaty=1, repeatz=512, base=random_base) * 256))
+                g_val = clamp(int(pnoise3(x,y,t, octaves=8, repeatx=1, repeaty=1, repeatz=512, base=random_base+19) * 256))
+                b_val = clamp(int(pnoise3(x,y,t, octaves=8, repeatx=1, repeaty=1, repeatz=512, base=random_base+61) * 256))
+                # print r_val, g_val, b_val
+                key_vals[i].append( (r_val, g_val, b_val) )
+
+        key_list = list()
+        for row_list in key_vals:
+            key_list.extend(row_list)
+
+        set_keyboard_rgb(key_list)
+
+        sleep(1.0/per_sec)
+
+        t += 0.01
+
 
 def r_wipe(count=5, r_color=(255,0,0), bg_color=(0,255,0), twinkle=True, line=False):
 
@@ -211,3 +240,9 @@ while not root_confirmed:
 if __name__ == '__main__':
     write_to_file('brightness', '255')
     scrolling_text('hello world', bg_color=(0,0,0), text_color=(255,255,255), speed=8, variety=32)
+    perlin_noise()
+    write_to_file('brightness', '128')
+    sleep(0.2)
+    write_to_file('brightness', '64')
+    sleep(0.2)
+    write_to_file('brightness', '32')
