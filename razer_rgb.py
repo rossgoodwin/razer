@@ -91,14 +91,12 @@ def random_burst(secs=10, per_sec=10, bright=False, sparseness=0):
 
         sleep(1.0/per_sec)
 
-def perlin_noise(secs=20, per_sec=15):
-    from noise import pnoise3
-
+def perlin_noise(secs=20, per_sec=15, vertical=False):
     t = 0.0
     y = 0.0
-    random_base = choice(range(256))
+    x = 0.0
+    random_base = choice(range(512))
     for interval in range(secs*per_sec):
-        x = 0.0
         key_vals = [list() for _ in range(ROW_COUNT)]
         for i in range(ROW_COUNT):
             y += 3.3
